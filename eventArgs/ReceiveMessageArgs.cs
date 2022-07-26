@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WpfApp1.eventArgs
+{
+
+    public class ReceiveMessagetArgs:EventArgs
+    {
+        /// <summary>
+        /// Message Json Schema
+        /// </summary>
+        public string Message { get; set; }
+        /// <summary>
+        /// User Json Schema
+        /// </summary>
+        public string User { get; set; }
+    }
+}
