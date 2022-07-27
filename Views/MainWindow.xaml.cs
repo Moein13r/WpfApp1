@@ -28,7 +28,7 @@ namespace WpfApp1
     {
         MainPageViewModel viewModel;
         public MainWindow()
-        {            
+        {
             InitializeComponent();
             viewModel = new MainPageViewModel(this, App.serviceProvider.GetService<RealTimeMessaging>());
             DataContext = viewModel;
@@ -60,6 +60,13 @@ namespace WpfApp1
         {
             viewModel.SelectedRoom = (sender as Grid).Tag as Room;
             Container.Content = new ChatWindow(viewModel.SelectedRoom);
+        }
+
+        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            CreateRoomWindow createRoomWindow = new CreateRoomWindow();
+            createRoomWindow.Owner = App.Current.MainWindow;
+            createRoomWindow.ShowDialog();
         }
     }
 }

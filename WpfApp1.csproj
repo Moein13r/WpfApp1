@@ -8,15 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\plus.png" />
+    <None Remove="Resources\More.png" />
     <None Remove="Resources\TestImage.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\TestImage.jpg" />
+    <Resource Include="Resources\Images\plus.png" />
+    <Resource Include="Resources\More.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Images\" />
+    <Resource Include="Resources\TestImage.jpg" />
   </ItemGroup>
 
   <ItemGroup>

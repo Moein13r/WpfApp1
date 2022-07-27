@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -55,6 +56,13 @@ namespace WpfApp1.Views
 
         private void FileDialog_FileOk(object? sender, System.ComponentModel.CancelEventArgs e)
         {
+        }
+
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            var scrollViewer = (ScrollViewer)sender;            
+            if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
+                MessageBox.Show("This is the end");
         }
     }
 }
