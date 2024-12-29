@@ -3,7 +3,7 @@ name: CI/CD - Build and Deploy WPF App
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
