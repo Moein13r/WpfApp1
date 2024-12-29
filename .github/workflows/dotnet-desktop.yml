@@ -1,12 +1,9 @@
-name: CI - Build WPF App
+name: CI/CD - Build and Deploy WPF App
 
 on:
   push:
     branches:
-      - master
-  pull_request:
-    branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -31,10 +28,21 @@ jobs:
       - name: Build solution
         run: dotnet build --configuration Release --no-restore
 
-      # Step 5: (Optional) Run tests
-      - name: Run tests
-        run: dotnet test --no-build --verbosity normal
-
-      # Step 6: (Optional) Publish artifacts
-      - name: Publish artifacts
+      # Step 5: Publish the app
+      - name: Publish the app
         run: dotnet publish --configuration Release --output ./publish
+
+      # Step 6: Deploy to server
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            # Create deployment directory if it doesn't exist
+            mkdir -p /var/www/wpf-app
+            # Copy files to the server
+            scp -P ${{ secrets.SSH_PORT }} -r ./publish/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/wpf-app
+            # (Optional) Restart any related services, e.g., Windows service
