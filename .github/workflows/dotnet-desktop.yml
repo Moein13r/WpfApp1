@@ -1,4 +1,4 @@
-name: CI/CD - Build and Deploy WPF App
+name: CI/CD - Build and Deploy WPF App to Windows Server
 
 on:
   push:
@@ -32,8 +32,8 @@ jobs:
       - name: Publish the app
         run: dotnet publish --configuration Release --output ./publish
 
-      # Step 6: Deploy using Native SSH in PowerShell
-      - name: Deploy to Server
+      # Step 6: Deploy using SSH
+      - name: Deploy to Windows Server
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
@@ -43,14 +43,8 @@ jobs:
           # Install OpenSSH client if not installed
           Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
 
-          # Use SCP to copy files to the server
-          scp -P $env:SSH_PORT -r ./publish/* $env:SSH_USER@$env:SSH_HOST:/var/www/wpf-app
+          # Use PowerShell to copy files to the server using SCP
+          scp -P $env:SSH_PORT -r ./publish/* $env:SSH_USER@$env:SSH_HOST:C:\Deployment\WPFApp
 
-          # Use SSH to execute remote commands
-          $sshCommand = @"
-          echo Deployment complete. Performing server-specific tasks...
-          # Example: Restarting a service
-          # net stop MyService
-          # net start MyService
-          "@
-          ssh -p $env:SSH_PORT $env:SSH_USER@$env:SSH_HOST $sshCommand
+          # Use SSH to execute post-deployment tasks
+          ssh -p $env:SSH_PORT $env:SSH_USER@$env:SSH_HOST "powershell -Command 'mkdir -Force C:\Deployment\WPFApp; Write-Host Deployment Complete'"
